@@ -17,7 +17,7 @@ namespace Housing_Server.Controllers
             _context = context;
         }
 
-        // Fetch Info for user
+        // Fetch Property Info for user
         [HttpGet("{userID}"), Authorize]
         public async Task<ActionResult<Property_ResultDto>> FetchAllSellerListing(int userID)
         {
