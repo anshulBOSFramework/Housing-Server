@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Housing_Server.DTOs;
 using Housing_Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -22,7 +23,7 @@ namespace Housing_Server.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public async Task<ActionResult<User>> GetUserDetails(int id)
         {
             var user = await _context.Users
@@ -35,7 +36,7 @@ namespace Housing_Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(User_LoginDto request)
+        public async Task<ActionResult<User_LoginResult>> Login(User_LoginDto request)
         {
             var user = await _context.Users
                 .FirstOrDefaultAsync(h => h.Email == request.Email);
@@ -51,19 +52,22 @@ namespace Housing_Server.Controllers
             }
 
             string token = CreateToken(user);
-            return Ok(token);
+
+            var result = new User_LoginResult
+            {
+                Token = token,
+                User = user
+            };
+
+            return Ok(result);
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(User_RegisterDto request)
+        public async Task<ActionResult<User_LoginResult>> Register(User_RegisterDto request)
         {
-            var search_user = await _context.Users
-                .FirstOrDefaultAsync(h => h.Email == request.Email);
+            var search_user = await _context.Users.FirstOrDefaultAsync(h => h.Email == request.Email);
             
-            if(search_user != null)
-            {
-                return BadRequest("User Email Already Exists");
-            } else
+            if(search_user == null)
             {
                 CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -77,14 +81,25 @@ namespace Housing_Server.Controllers
                     AccountCategory = request.AccountCategory
                 };
 
+                string token = CreateToken(user);
+
+                var result = new User_LoginResult
+                {
+                    Token = token,
+                    User = user
+                };
+
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
-                return Ok(user);
+                return Ok(result);
+            } else
+            {
+                return BadRequest("User Email Already Exists");
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update"), Authorize]
         public async Task<ActionResult<User>> UpdateUser(User_RegisterDto request)
         {
             var search_user = await _context.Users

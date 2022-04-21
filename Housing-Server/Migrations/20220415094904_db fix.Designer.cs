@@ -4,6 +4,7 @@ using Housing_Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Housing_Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220415094904_db fix")]
+    partial class dbfix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,12 +36,11 @@ namespace Housing_Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FlatNo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("FlatNo")
+                        .HasColumnType("int");
 
-                    b.Property<string>("FloorNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FloorNo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Locality")
                         .IsRequired()
@@ -49,49 +50,12 @@ namespace Housing_Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TotalFloors")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TotalFloors")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Address");
-                });
-
-            modelBuilder.Entity("Housing_Server.Models.Application", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropertyCategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PropertyService")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("Housing_Server.Models.PropertyBuy", b =>
@@ -277,33 +241,41 @@ namespace Housing_Server.Migrations
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PropertyAge")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyAge")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("PropertyArea")
-                        .HasColumnType("real");
+                    b.Property<string>("PropertyArea")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PropertyAvailable")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyAvailable")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PropertyBalcony")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyBalcony")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PropertyBathroom")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyBathroom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PropertyBhk")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyBhk")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("PropertyCarpetArea")
-                        .HasColumnType("real");
+                    b.Property<string>("PropertyCarpetArea")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PropertyCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PropertyCoveredParking")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyCoveredParking")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PropertyDeposit")
                         .HasColumnType("bit");
@@ -312,14 +284,16 @@ namespace Housing_Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("PropertyMaintenanceCost")
-                        .HasColumnType("real");
+                    b.Property<string>("PropertyMaintenanceCost")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("PropertyMonthlyRent")
-                        .HasColumnType("real");
+                    b.Property<string>("PropertyMonthlyRent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PropertyOpenParking")
-                        .HasColumnType("int");
+                    b.Property<string>("PropertyOpenParking")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PropertyService")
                         .IsRequired()
